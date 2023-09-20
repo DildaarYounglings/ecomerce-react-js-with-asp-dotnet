@@ -1,12 +1,16 @@
-import React, { Component, Fragment } from 'react';
-
+import React, { Component, Fragment, useState } from 'react';
+import { itemInCart } from './ShoppingCart'
 export const Product = (props) => {
     const { product, shoppingCartState } = props;
+    const [enabled, setEnabled] = useState(true);
 
     const addToCart = () => {
         const { shoppingCart, setShoppingCart } = shoppingCartState;
-        setShoppingCart([...shoppingCart, product]);
-        console.log(shoppingCart);
+        if (itemInCart === false) {
+            setEnabled(!enabled);
+        }
+        setShoppingCart((prev) => [...prev,product]);
+        setEnabled(!enabled);
     }
 
     return (
@@ -15,7 +19,7 @@ export const Product = (props) => {
                 <div style={{ backgroundColor: "purple", width: "fit-content", marginBottom: "1rem", translate:"-15px 10px" }}><img style={{ height: "120px", width: "150px" }} src={product.imageUrl} alt="img" /></div>
                 <h3>{product.productName}</h3>
                 <p>Price: {product.price}</p>
-                <button onClick={() => addToCart()} style={{ width: "100px", height: "30px", borderRadius: "10px" }} >Add to cart</button>
+                {enabled ? < button onClick={() => addToCart()} style={{ width: "100px", height: "30px", borderRadius: "10px" }} >Add to cart</button> : < button style={{ width: "100px", height: "30px", borderRadius: "10px" }} disabled={true} >item in cart</button>}
             </ul>
         </article>
     );
