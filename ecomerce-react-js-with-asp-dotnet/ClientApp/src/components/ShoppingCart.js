@@ -5,21 +5,24 @@ export const ShoppingCart = (props) => {
     const { shoppingCart, setShoppingCart } = shoppingCartState;
     return (
         <section style={{ display: "flex", gap:"3rem" }}>
-            {shoppingCart.map((product,index) => (<ShoppingCartItem key={index} product={product} shoppingCartState={{ shoppingCart, setShoppingCart }} />))}
+            {shoppingCart.map((product, index) => (<ShoppingCartItem key={index} product={product} shoppingCartState={{ shoppingCart, setShoppingCart }} />))}
+            <div>
+            </div>
         </section>
     )
 }
-export let itemInCart = true
+export let itemInCart = ""
 export const ShoppingCartItem = (props) => {
     const [quantity, setQuantity] = useState(0);
     const { shoppingCartState,product} = props;
     const { shoppingCart, setShoppingCart } = shoppingCartState;
+    
 
     const removeItemFromCart = () => {
         let copiedShoppingCart = [...shoppingCart];
         copiedShoppingCart = copiedShoppingCart.filter((item, index) => item.productName !== product.productName);
         console.log(copiedShoppingCart);
-        itemInCart = false;
+        itemInCart = product.productName;
         setShoppingCart(copiedShoppingCart);
     }
     return (
@@ -27,7 +30,7 @@ export const ShoppingCartItem = (props) => {
             <ul style={{ listStyleType: "none", display: "flex", flexDirection: "column" }}>
                 <div style={{ backgroundColor: "purple", width: "fit-content", marginBottom: "1rem", translate: "-15px 10px" }}><img style={{ height: "120px", width: "150px" }} src={product.imageUrl} alt="img" /></div>
                 <h3>{product.productName}</h3>
-                <p>Price: {product.price}</p>
+                <p>Price: { product.priceString + " " + product.priceInt }</p>
                 <ul style={{ listStyleType: "none", width: "fit-content", display: "flex", flexDirection: "row", gap: "1rem", translate: "-30px 0px" }}>
                     <button onClick={() => setQuantity((prev) => {
                         if (quantity > 0) {
